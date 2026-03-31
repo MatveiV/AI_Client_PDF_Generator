@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Отчёт по проекту — {{ project_name }}</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; font-size: 12px; color: #1a1a2e; background: #f0f2f5; padding: 32px; }
+    .page { max-width: 760px; margin: 0 auto; background: #fff; border-radius: 10px; overflow: hidden; }
+    .header { background: linear-gradient(135deg, #0f3460 0%, #16213e 100%); color: #fff; padding: 32px 40px 24px; }
+    .header h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .header .subtitle { font-size: 11px; opacity: 0.6; }
+    .header .project-type { display: inline-block; margin-top: 12px; padding: 3px 12px; background: rgba(255,255,255,0.15); border-radius: 20px; font-size: 10px; letter-spacing: 0.8px; text-transform: uppercase; }
+    .body { padding: 28px 40px 36px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+    .card { background: #f8f9fa; border-radius: 8px; padding: 14px 16px; border-left: 3px solid #0f3460; }
+    .card.accent  { border-left-color: #e63946; }
+    .card.green   { border-left-color: #2a9d8f; }
+    .card.orange  { border-left-color: #e9c46a; }
+    .card.purple  { border-left-color: #7b2d8b; }
+    .card.blue    { border-left-color: #0f3460; }
+    .card-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #6c757d; margin-bottom: 5px; }
+    .card-value { font-size: 13px; color: #1a1a2e; line-height: 1.5; }
+    .card-value.large { font-size: 15px; font-weight: 700; }
+    .section { margin-bottom: 20px; }
+    .section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #0f3460; border-bottom: 2px solid #0f3460; padding-bottom: 4px; margin-bottom: 12px; }
+    .list-items { list-style: none; padding: 0; }
+    .list-items li { padding: 7px 12px 7px 28px; position: relative; background: #f8f9fa; border-radius: 5px; margin-bottom: 6px; font-size: 12px; line-height: 1.4; }
+    .list-items li::before { content: "✓"; position: absolute; left: 10px; color: #2a9d8f; font-weight: 700; }
+    .list-items.risks li::before { content: "!"; color: #e63946; }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 10px; font-weight: 600; }
+    .badge-positive { background: #d4edda; color: #155724; }
+    .badge-negative { background: #f8d7da; color: #721c24; }
+    .badge-neutral  { background: #d1ecf1; color: #0c5460; }
+    .badge-mixed    { background: #fff3cd; color: #856404; }
+    /* Затраты */
+    .cost-block { background: #f0f7ff; border: 1px solid #b8d4f0; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; }
+    .cost-block .cost-title { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #0f3460; margin-bottom: 8px; }
+    .cost-row { display: flex; justify-content: space-between; font-size: 11px; color: #495057; margin-bottom: 3px; }
+    .cost-row.total { font-weight: 700; font-size: 12px; color: #0f3460; border-top: 1px solid #b8d4f0; padding-top: 6px; margin-top: 4px; }
+    /* Изображения — каждое на отдельной странице, без разрывов */
+    .image-page { page-break-before: always; padding: 20px 0; }
+    .image-page:first-child { page-break-before: avoid; }
+    .image-wrapper { page-break-inside: avoid; break-inside: avoid; }
+    .image-wrapper img { width: 100%; max-width: 100%; display: block; border-radius: 8px; border: 1px solid #dee2e6; }
+    .image-caption { padding: 8px 12px; background: #f8f9fa; font-size: 10px; color: #6c757d; text-align: center; border-radius: 0 0 8px 8px; }
+    .footer { border-top: 1px solid #e9ecef; padding: 14px 40px; font-size: 10px; color: #adb5bd; display: flex; justify-content: space-between; }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <h1>{{ project_name }}</h1>
+    <div class="subtitle">Отчёт по итогам встречи с заказчиком</div>
+    <span class="project-type">Проектный отчёт</span>
+  </div>
+  <div class="body">
+
+    <!-- Участники -->
+    <div class="section">
+      <div class="section-title">Участники встречи</div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-label">Заказчик</div>
+          <div class="card-value large">{{ client_representative }}</div>
+          <div class="card-value" style="font-size:11px;color:#6c757d;margin-top:3px;">{{ client_position }}{% if client_company %} · {{ client_company }}{% endif %}</div>
+        </div>
+        <div class="card green">
+          <div class="card-label">Аналитик-разработчик</div>
+          <div class="card-value large">{{ analyst_name }}</div>
+          <div class="card-value" style="font-size:11px;color:#6c757d;margin-top:3px;">{{ topic }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Основной запрос -->
+    <div class="section">
+      <div class="section-title">Основной запрос</div>
+      <div class="card"><div class="card-value">{{ main_request }}</div></div>
+    </div>
+
+    <!-- Сроки, бюджет, затраты на разработку -->
+    <div class="section">
+      <div class="section-title">Сроки и бюджет</div>
+      <div class="grid-3">
+        <div class="card orange">
+          <div class="card-label">Желаемые сроки</div>
+          <div class="card-value">{{ desired_deadline }}</div>
+        </div>
+        <div class="card green">
+          <div class="card-label">Оценка разработки</div>
+          <div class="card-value">{{ estimated_duration }}</div>
+        </div>
+        <div class="card accent">
+          <div class="card-label">Бюджет проекта</div>
+          <div class="card-value large">{{ budget }}</div>
+        </div>
+      </div>
+    </div>
+
+    {% if tech_stack %}
+    <div class="section">
+      <div class="section-title">Технологический стек</div>
+      <div class="card purple"><div class="card-value">{{ tech_stack }}</div></div>
+    </div>
+    {% endif %}
+
+    {% if key_requirements %}
+    <div class="section">
+      <div class="section-title">Ключевые требования</div>
+      <ul class="list-items">{% for req in key_requirements %}<li>{{ req }}</li>{% endfor %}</ul>
+    </div>
+    {% endif %}
+
+    {% if risks %}
+    <div class="section">
+      <div class="section-title">Оценка рисков</div>
+      <ul class="list-items risks">{% for risk in risks %}<li>{{ risk }}</li>{% endfor %}</ul>
+    </div>
+    {% endif %}
+
+    <!-- Удовлетворённость и следующие шаги -->
+    <div class="grid-2">
+      <div class="section">
+        <div class="section-title">Удовлетворённость заказчика</div>
+        <div class="card">
+          {% set s = client_satisfaction | lower %}
+          {% if 'позитив' in s %}<span class="badge badge-positive">{{ client_satisfaction }}</span>
+          {% elif 'негатив' in s %}<span class="badge badge-negative">{{ client_satisfaction }}</span>
+          {% elif 'нейтрал' in s %}<span class="badge badge-neutral">{{ client_satisfaction }}</span>
+          {% else %}<span class="badge badge-mixed">{{ client_satisfaction }}</span>{% endif %}
+          <div class="card-value" style="margin-top:8px;font-size:11px;color:#6c757d;">Настроение: {{ mood }}</div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title">Следующие шаги</div>
+        <div class="card green"><div class="card-value">{{ next_steps }}</div></div>
+      </div>
+    </div>
+
+    <!-- Затраты на генерацию отчёта -->
+    {% if cost %}
+    <div class="cost-block">
+      <div class="cost-title">Затраты на генерацию отчёта (AI)</div>
+      <div class="cost-row"><span>Входные токены</span><span>{{ cost.prompt_tokens }}</span></div>
+      <div class="cost-row"><span>Выходные токены</span><span>{{ cost.completion_tokens }}</span></div>
+      <div class="cost-row"><span>Стоимость (USD)</span><span>${{ "%.6f" | format(cost.cost_total_usd) }}</span></div>
+      <div class="cost-row total"><span>Итого (RUB)</span><span>{{ "%.4f" | format(cost.cost_total_rub) }} ₽</span></div>
+      <div class="cost-row" style="font-size:10px;color:#adb5bd;margin-top:4px;"><span>Курс ЦБ РФ</span><span>{{ "%.2f" | format(cost.usd_rub_rate) }} ₽/$</span></div>
+    </div>
+    {% endif %}
+
+    <!-- Изображения — каждое полностью на своей странице -->
+    {% if images %}
+    <div class="section">
+      <div class="section-title">Визуальные материалы</div>
+    </div>
+    {% for img_uri in images %}
+    <div class="image-wrapper" style="{% if not loop.first %}page-break-before: always;{% endif %}">
+      <img src="{{ img_uri }}" alt="Визуализация {{ loop.index }}">
+      <div class="image-caption">Изображение {{ loop.index }} из {{ images | length }} · AI-генерация</div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+  </div>
+  <div class="footer">
+    <span>AI Client PDF Generator</span>
+    <span>Сформировано: {{ generated_at }}</span>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Дизайн-отчёт — {{ project_name }}</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; font-size: 12px; color: #1a1a2e; background: #f0f2f5; padding: 32px; }
+    .page { max-width: 760px; margin: 0 auto; background: #fff; border-radius: 10px; overflow: hidden; }
+    .header { background: linear-gradient(135deg, #6a0572 0%, #a4508b 50%, #ff6b6b 100%); color: #fff; padding: 32px 40px 24px; }
+    .header h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .header .subtitle { font-size: 11px; opacity: 0.7; }
+    .header .badge-type { display: inline-block; margin-top: 12px; padding: 3px 12px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 10px; letter-spacing: 0.8px; text-transform: uppercase; }
+    .body { padding: 28px 40px 36px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+    .card { background: #f8f9fa; border-radius: 8px; padding: 14px 16px; border-left: 3px solid #6a0572; }
+    .card.pink { border-left-color: #ff6b6b; }
+    .card.teal { border-left-color: #2a9d8f; }
+    .card.gold { border-left-color: #e9c46a; }
+    .card-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #6c757d; margin-bottom: 5px; }
+    .card-value { font-size: 13px; color: #1a1a2e; line-height: 1.5; }
+    .section { margin-bottom: 20px; }
+    .section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #6a0572; border-bottom: 2px solid #6a0572; padding-bottom: 4px; margin-bottom: 12px; }
+    .list-items { list-style: none; padding: 0; }
+    .list-items li { padding: 7px 12px 7px 28px; position: relative; background: #f8f9fa; border-radius: 5px; margin-bottom: 6px; font-size: 12px; line-height: 1.4; }
+    .list-items li::before { content: "▸"; position: absolute; left: 10px; color: #a4508b; font-weight: 700; }
+    .prompt-block { background: #1a1a2e; color: #e0e0e0; border-radius: 8px; padding: 16px 20px; font-family: monospace; font-size: 11px; line-height: 1.6; margin-bottom: 20px; word-break: break-word; }
+    .prompt-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #a4508b; margin-bottom: 8px; }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 10px; font-weight: 600; }
+    .badge-positive { background: #d4edda; color: #155724; }
+    .badge-negative { background: #f8d7da; color: #721c24; }
+    .badge-neutral  { background: #d1ecf1; color: #0c5460; }
+    .badge-mixed    { background: #fff3cd; color: #856404; }
+    /* Затраты */
+    .cost-block { background: #fdf0ff; border: 1px solid #d4a0e0; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; }
+    .cost-block .cost-title { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #6a0572; margin-bottom: 8px; }
+    .cost-row { display: flex; justify-content: space-between; font-size: 11px; color: #495057; margin-bottom: 3px; }
+    .cost-row.total { font-weight: 700; font-size: 12px; color: #6a0572; border-top: 1px solid #d4a0e0; padding-top: 6px; margin-top: 4px; }
+    /* Изображения — каждое полностью на своей странице без разрывов */
+    .image-wrapper {
+      page-break-before: always;
+      page-break-inside: avoid;
+      break-before: page;
+      break-inside: avoid;
+    }
+    .image-wrapper img {
+      width: 100%;
+      max-width: 100%;
+      display: block;
+      border-radius: 8px 8px 0 0;
+      border: 1px solid #dee2e6;
+    }
+    .image-caption { padding: 8px 12px; background: #f8f9fa; font-size: 10px; color: #6c757d; text-align: center; border-radius: 0 0 8px 8px; border: 1px solid #dee2e6; border-top: none; }
+    .footer { border-top: 1px solid #e9ecef; padding: 14px 40px; font-size: 10px; color: #adb5bd; display: flex; justify-content: space-between; }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <h1>{{ project_name }}</h1>
+    <div class="subtitle">Дизайн-концепт по итогам встречи с заказчиком</div>
+    <span class="badge-type">Дизайн-отчёт</span>
+  </div>
+  <div class="body">
+
+    <div class="section">
+      <div class="section-title">Заказчик</div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-label">Представитель</div>
+          <div class="card-value" style="font-size:14px;font-weight:700;">{{ client_representative }}</div>
+          <div class="card-value" style="font-size:11px;color:#6c757d;margin-top:3px;">{{ client_position }}{% if client_company %} · {{ client_company }}{% endif %}</div>
+        </div>
+        <div class="card teal">
+          <div class="card-label">Платформа / Аудитория</div>
+          <div class="card-value">{{ platform }}</div>
+          <div class="card-value" style="font-size:11px;color:#6c757d;margin-top:4px;">{{ target_audience }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Дизайн-требования</div>
+      <div class="grid-2">
+        <div class="card pink"><div class="card-label">Стиль</div><div class="card-value">{{ design_style }}</div></div>
+        <div class="card gold"><div class="card-label">Цветовая схема</div><div class="card-value">{{ color_scheme }}</div></div>
+      </div>
+    </div>
+
+    {% if key_screens %}
+    <div class="section">
+      <div class="section-title">Ключевые экраны / страницы</div>
+      <ul class="list-items">{% for screen in key_screens %}<li>{{ screen }}</li>{% endfor %}</ul>
+    </div>
+    {% endif %}
+
+    {% if references %}
+    <div class="section">
+      <div class="section-title">Референсы</div>
+      <ul class="list-items">{% for ref in references %}<li>{{ ref }}</li>{% endfor %}</ul>
+    </div>
+    {% endif %}
+
+    {% if image_prompt %}
+    <div class="section">
+      <div class="section-title">Промпт для генерации концепта</div>
+      <div class="prompt-block">
+        <div class="prompt-label">Image Generation Prompt</div>
+        {{ image_prompt }}
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="grid-2">
+      <div class="section">
+        <div class="section-title">Настроение заказчика</div>
+        <div class="card">
+          {% set m = mood | lower %}
+          {% if 'позитив' in m %}<span class="badge badge-positive">{{ mood }}</span>
+          {% elif 'негатив' in m %}<span class="badge badge-negative">{{ mood }}</span>
+          {% elif 'нейтрал' in m %}<span class="badge badge-neutral">{{ mood }}</span>
+          {% else %}<span class="badge badge-mixed">{{ mood }}</span>{% endif %}
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title">Следующие шаги</div>
+        <div class="card teal"><div class="card-value">{{ next_steps }}</div></div>
+      </div>
+    </div>
+
+    {% if cost %}
+    <div class="cost-block">
+      <div class="cost-title">Затраты на генерацию отчёта (AI)</div>
+      <div class="cost-row"><span>Входные токены</span><span>{{ cost.prompt_tokens }}</span></div>
+      <div class="cost-row"><span>Выходные токены</span><span>{{ cost.completion_tokens }}</span></div>
+      <div class="cost-row"><span>Стоимость (USD)</span><span>${{ "%.6f" | format(cost.cost_total_usd) }}</span></div>
+      <div class="cost-row total"><span>Итого (RUB)</span><span>{{ "%.4f" | format(cost.cost_total_rub) }} ₽</span></div>
+      <div class="cost-row" style="font-size:10px;color:#adb5bd;margin-top:4px;"><span>Курс ЦБ РФ</span><span>{{ "%.2f" | format(cost.usd_rub_rate) }} ₽/$</span></div>
+    </div>
+    {% endif %}
+
+    <!-- Каждое изображение на отдельной странице -->
+    {% if images %}
+    {% for img_uri in images %}
+    <div class="image-wrapper">
+      <img src="{{ img_uri }}" alt="Дизайн-концепт {{ loop.index }}">
+      <div class="image-caption">Концепт {{ loop.index }} из {{ images | length }} · AI-генерация</div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+  </div>
+  <div class="footer">
+    <span>AI Client PDF Generator · Дизайн-отчёт</span>
+    <span>Сформировано: {{ generated_at }}</span>
+  </div>
+</div>
+</body>
+</html>
